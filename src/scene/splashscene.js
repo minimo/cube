@@ -1,12 +1,12 @@
 /*
  *  splashscene.js
- *  2017/02/08
+ *  2017/06/15
  *  @auther minimo  
  *  This Program is MIT license.
  *
  */
 
-phina.define('qft.SplashScene', {
+phina.define('stg.SplashScene', {
     superClass: 'phina.display.DisplayScene',
 
     init: function() {
