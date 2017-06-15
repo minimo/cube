@@ -12,22 +12,17 @@ DEBUG = false;
 DEBUG_MOBILE = false;
 
 //定数
-SC_W = 576;
-SC_H = 324;
-// SC_W = 480;
-// SC_H = 320;
-
-//インスタンス
-var app;
+SC_W = 750;
+SC_H = 1334;
 
 window.onload = function() {
-    app = qft.Application();
+    app = stg.Application();
     app.replaceScene(stg.GameScene());
 
     //モバイル対応
     if (phina.isMobile()) {
         app.domElement.addEventListener('touchend', function dummy() {
-            var s = phina.asset.Sound();
+            let s = phina.asset.Sound();
             s.loadFromBuffer();
             s.play().stop();
             app.domElement.removeEventListener('touchend', dummy);
@@ -35,5 +30,5 @@ window.onload = function() {
     }
 
     app.run();
-//    app.enableStats();
+    app.enableStats();
 };
