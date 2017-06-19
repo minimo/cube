@@ -43,15 +43,16 @@ phina.define("stg.GameScene", {
     setup3DLayer: function() {
         //カメラ位置の変更
         this.glCamera.position.x = 0;
-        this.glCamera.position.y = 100;
-        this.glCamera.position.z = 100;
+        this.glCamera.position.y = 30;
+        this.glCamera.position.z = 30;
         this.glCamera.lookAt(new THREE.Vector3(0, 0, 0));
 
         //ライトの追加
         this.glScene.remove(this.glLayer.light);
         this.glScene.add(new THREE.AmbientLight(0xFFFFFF));
-        this.light = new THREE.DirectionalLight(0xffffbb, 1);
+        this.light = new THREE.DirectionalLight(0xaaaaaa, 1);
         this.light.position.set(-1, 1, -1);
+        this.light.rotation.set(0, Math.PI / 2, 0);
         this.glScene.add(this.light);
     },
 
@@ -75,14 +76,16 @@ phina.define("stg.GameScene", {
         let planeGeometory = new THREE.PlaneGeometry(200, 200, 10, 10);
         let planeMaterial = new THREE.MeshLambertMaterial({color: 0xaaaaaa});
         this.plane = new THREE.Mesh(planeGeometory, planeMaterial);
+        this.plane.position.set(0, 0, 0);
+        this.plane.rotation.set( -Math.PI / 2, 0, 0);
         this.plane.physics = phyPlane;
         this.glScene.add(this.plane);
 
         //箱の作成
         let phyBox = new CANNON.Body({mass: 1});
-        phyBox.addShape(new CANNON.Box(new CANNON.Vec3(1, 1, 1)));
+        phyBox.addShape(new CANNON.Box(new CANNON.Vec3(5, 5, 5)));
         phyBox.position.y = 10;
-        phyBox.angularVelocity.set(10, 10, 10);
+        phyBox.angularVelocity.set(10, 0, 0);
         phyBox.angularDamping = 0.1;
         this.phyWorld.add(phyBox);
 
@@ -90,6 +93,7 @@ phina.define("stg.GameScene", {
         let material = new THREE.MeshLambertMaterial({color: 0x44aa22});
         this.cube = new THREE.Mesh(geometory, material);
         this.cube.physics = phyBox;
+        this.cube.position.set(0, 5, 0);
         this.glScene.add(this.cube);
     },
 });
