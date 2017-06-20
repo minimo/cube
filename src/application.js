@@ -7,16 +7,18 @@
 
 var stg = {};
 
-phina.define("stg.Application", {
-    superClass: "phina.display.CanvasApp",
+phina.namespace(function() {
+    phina.define("stg.Application", {
+        superClass: "phina.display.CanvasApp",
 
-    init: function() {
-        this.superInit({
-            query: '#world',
-            width: SC_W,
-            height: SC_H,
-            backgroundColor: 'rgba(0, 0, 0, 1)',
-        });
-        this.fps = 60;
-    },
+        init: function() {
+            this.superInit({
+                query: '#world',
+                width: SC_W,
+                height: SC_H,
+                backgroundColor: 'rgba(0, 0, 0, 1)',
+            });
+            this.fps = 60;
+        },
+    });
 });
