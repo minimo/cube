@@ -34,6 +34,12 @@ phina.define("stg.GameScene", {
         this.setup3DWorld();
         this.setup3DObject();
 
+        //テスト
+        let geometory = new THREE.CubeGeometry(10, 10, 10);
+        let material = new THREE.MeshLambertMaterial({color: 0x44aa22});
+        var cb = phina.extension.ThreeElement(new THREE.Mesh(geometory, material));
+        var ph = phina.extension.Physics(this.phyWorld).attachTo(cb);
+
         this.time = 0;
     },
 

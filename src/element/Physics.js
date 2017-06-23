@@ -9,7 +9,7 @@ phina.namespace(function() {
     phina.define("phina.extension.Physics", {
         superClass: "phina.accessory.Accessory",
 
-        //•¨—‰‰ZƒIƒuƒWƒFƒNƒg
+        //ç‰©ç†æ¼”ç®—ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
         phyObj: null,
 
         _static: {
@@ -24,21 +24,22 @@ phina.namespace(function() {
             options = (options || {}).$safe(phina.extension.Physics._defaultOptions);
             this.superInit();
 
-            //•¨—‰‰Z—p
+            //ç‰©ç†æ¼”ç®—ç”¨
             let shape = null;
             switch (options.type) {
-                //” ‚Ìì¬
+                //ç®±ã®ä½œæˆ
                 case "box":
-                    shape = new CANNON.Box(new CANNON.Vec3(options.size.x, options.size.y, options.size.z);
+                    shape = new CANNON.Box(new CANNON.Vec3(options.size.x, options.size.y, options.size.z));
                     break;
                 case "sphere":
                     shape = new CANNON.Sphere(options.radius);
                     break;
             }
             this.phyObj = new CANNON.Body({
-                mass: mass,
+                mass: 1,
                 shape: shape,
             });
+
         },
 
         update: function() {
@@ -52,13 +53,14 @@ phina.namespace(function() {
         attachTo: function(element) {
             element.attach(this);
             this.setTarget(element);
-            this._physics = this;
+            element._physics = this;
 
-            //ƒ^[ƒQƒbƒg‚Ésetter/getter‚ğ’è‹`
+            //ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«setter/getterã‚’å†å®šç¾©
             var t = this.target;
-            Object.defineProperty(t, "x", {set: function(v) { this.physics.position.x = v;}, get: function() { return this.physics.position.x;} });
-            Object.defineProperty(t, "y", {set: function(v) { this.physics.position.y = v;}, get: function() { return this.physics.position.y;} });
-            Object.defineProperty(t, "z", {set: function(v) { this.physics.position.z = v;}, get: function() { return this.physics.position.z;} });
+            Object.defineProperty(t, "x",{get: function()  { return this._physics.phyObj.position.x;}, set: function(v) { this._physics.phyObj.position.x = v;}});
+            Object.defineProperty(t, "y",{get: function()  { return this._physics.phyObj.position.y;}, set: function(v) { this._physics.phyObj.position.y = v;}});
+            Object.defineProperty(t, "z",{get: function()  { return this._physics.phyObj.position.z;}, set: function(v) { this._physics.phyObj.position.z = v;}});
+            Object.defineProperty(t, "quaternion",{get: function()  { return this._physics.phyObj.quaternion;}});
 
             return this;
         },
