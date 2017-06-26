@@ -17,6 +17,19 @@ phina.namespace(function() {
             this.threeObj = threeObj;
         },
 
+        addChild: function(child) {
+            if (child.parent) child.remove();
+            child.parent = this;
+            this.children.push(child);
+
+            if (child.threeObj) {
+                this.threeObj.add(child.threeObj);
+            }
+            child.flare('added');
+
+            return child;
+        },
+
         setPosition: function(x, y, z) {
             this.x = x;
             this.y = y;

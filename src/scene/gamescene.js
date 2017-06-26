@@ -32,13 +32,16 @@ phina.define("stg.GameScene", {
 
         this.setup3DLayer();
         this.setup3DWorld();
-        this.setup3DObject();
+//        this.setup3DObject();
 
         //テスト
         let geometory = new THREE.CubeGeometry(10, 10, 10);
         let material = new THREE.MeshLambertMaterial({color: 0x44aa22});
         var cb = phina.extension.ThreeElement(new THREE.Mesh(geometory, material));
         var ph = phina.extension.Physics(this.phyWorld).attachTo(cb);
+        cb.setPosition(0, 50, 0);
+        cb.addChildTo(this.glLayer);
+        this.glScene.add(cb.threeObj);
 
         this.time = 0;
     },
@@ -80,9 +83,7 @@ phina.define("stg.GameScene", {
         this.phyWorld.broadphase = new CANNON.NaiveBroadphase();
         this.phyWorld.solver.iterations = 10;
         this.phyWorld.solver.tolerance = 0.1;
-    },
 
-    setup3DObject: function() {
         //床の作成
         let phyPlane = new CANNON.Body({mass: 0});
         phyPlane.addShape(new CANNON.Plane());
@@ -98,7 +99,9 @@ phina.define("stg.GameScene", {
         this.plane.physics = phyPlane;
         this.plane.receiveShadow = true;
         this.glScene.add(this.plane);
+    },
 
+    setup3DObject: function() {
         //箱の作成
         let phyBox = new CANNON.Body({mass: 1});
         phyBox.addShape(new CANNON.Box(new CANNON.Vec3(10, 10, 10)));
