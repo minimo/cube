@@ -23,6 +23,7 @@ phina.namespace(function() {
         init: function(world, options) {
             options = (options || {}).$safe(phina.extension.Physics._defaultOptions);
             this.superInit();
+            this.world = world;
 
             //物理演算用
             let shape = null;
@@ -39,8 +40,8 @@ phina.namespace(function() {
                 mass: 1,
                 shape: shape,
             });
-
-        },
+            this.world.add(this.phyObj);
+       },
 
         update: function() {
             if (this.target) {
