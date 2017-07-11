@@ -17,6 +17,7 @@ phina.namespace(function() {
                 type: "box",
                 size: {x: 10, y: 10, z: 10},
                 radius: 10,
+                mass: 1,
             },
         },
 
@@ -37,7 +38,7 @@ phina.namespace(function() {
                     break;
             }
             this.phyObj = new CANNON.Body({
-                mass: 1,
+                mass: options.mass,
                 shape: shape,
             });
             this.world.add(this.phyObj);
@@ -62,6 +63,8 @@ phina.namespace(function() {
             Object.defineProperty(t, "y",{get: function()  { return this._physics.phyObj.position.y;}, set: function(v) { this._physics.phyObj.position.y = v;}});
             Object.defineProperty(t, "z",{get: function()  { return this._physics.phyObj.position.z;}, set: function(v) { this._physics.phyObj.position.z = v;}});
             Object.defineProperty(t, "quaternion",{get: function()  { return this._physics.phyObj.quaternion;}});
+            Object.defineProperty(t, "scale",{get: function()  { return this._physics.phyObj.scale;}});
+            Object.defineProperty(t, "rotation",{get: function()  { return this._physics.phyObj.rotation;}});
 
             return this;
         },
