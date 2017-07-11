@@ -32,16 +32,7 @@ phina.define("stg.GameScene", {
 
         this.setup3DLayer();
         this.setup3DWorld();
-//        this.setup3DObject();
-
-        //テスト
-        let geometory = new THREE.CubeGeometry(10, 10, 10);
-        let material = new THREE.MeshLambertMaterial({color: 0x44aa22});
-        var cb = phina.extension.ThreeElement(new THREE.Mesh(geometory, material));
-        var ph = phina.extension.Physics(this.phyWorld).attachTo(cb);
-        cb.setPosition(0, 50, 0);
-        cb.addChildTo(this.glLayer);
-        this.glScene.add(cb.threeObj);
+        this.setup3DObject();
 
         this.time = 0;
     },
@@ -49,13 +40,6 @@ phina.define("stg.GameScene", {
     update: function(app) {
         this.control.update();
         this.phyWorld.step(1 / 60);
-
-        //箱の姿勢位置情報更新
-        if (this.cube) {
-            this.cube.position.copy(this.cube.physics.position);
-            this.cube.quaternion.copy(this.cube.physics.quaternion);
-        }
-
         this.time++;
     },
 
@@ -71,7 +55,7 @@ phina.define("stg.GameScene", {
         this.glScene.add(new THREE.AmbientLight(0xFFFFFF));
         this.light = new THREE.DirectionalLight(0xaaaaaa, 1);
         this.light.position.set(-100, 100, 100);
-//        this.light.rotation.set(0, 1, 0);
+        this.light.rotation.set(0, 1, 0);
         this.light.castShadow = true;
         this.glScene.add(this.light);
     },
@@ -94,7 +78,7 @@ phina.define("stg.GameScene", {
         let planeGeometory = new THREE.PlaneGeometry(100, 100, 100, 100);
         let planeMaterial = new THREE.MeshLambertMaterial({color: 0xaaaaaa});
         this.plane = new THREE.Mesh(planeGeometory, planeMaterial);
-        this.plane.position.set(0, 0, 0);
+        this.plane.position.set(0, 5, 0);
         this.plane.rotation.set(-Math.PI / 2, 0, 0);
         this.plane.physics = phyPlane;
         this.plane.receiveShadow = true;
@@ -102,19 +86,12 @@ phina.define("stg.GameScene", {
     },
 
     setup3DObject: function() {
-        //箱の作成
-        let phyBox = new CANNON.Body({mass: 1});
-        phyBox.addShape(new CANNON.Box(new CANNON.Vec3(10, 10, 10)));
-        phyBox.position.y = 50;
-        phyBox.angularVelocity.set(10, 10, 10);
-        phyBox.angularDamping = 0.5;
-        this.phyWorld.add(phyBox);
-
         let geometory = new THREE.CubeGeometry(10, 10, 10);
         let material = new THREE.MeshLambertMaterial({color: 0x44aa22});
-        this.cube = new THREE.Mesh(geometory, material);
-        this.cube.physics = phyBox;
-        this.cube.castShadow = true;
-        this.glScene.add(this.cube);
+        var cb = phina.extension.ThreeElement(new THREE.Mesh(geometory, material));
+        var ph = phina.extension.Physics(this.phyWorld).attachTo(cb);
+        cb.setPosition(0, 50, 0);
+        cb.addChildTo(this.glLayer);
+        this.glScene.add(cb.threeObj);
     },
 });
