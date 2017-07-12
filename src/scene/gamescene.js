@@ -17,6 +17,13 @@ phina.define("stg.GameScene", {
             height: SC_H,
         }).addChildTo(this);
         this.glLayer.setOrigin(0, 0);
+        this.glLayer.addChild = function(child) {
+            if (child.threeObj !== undefined) {
+                this.scene.add(child.threeObj);
+                return this.superClass.prototype.addChild.apply(this, arguments);
+            }
+            return this.superClass.prototype.addChild.apply(this, arguments);
+        }
 
         this.glCamera = this.glLayer.camera;
         this.glRenderer = this.glLayer.renderer;
@@ -39,7 +46,7 @@ phina.define("stg.GameScene", {
 
     update: function(app) {
         if (this.time % 10 == 0) {
-            this.addCube();
+            Math.randint(0,1)? this.addCube(): this.addSphere();
         }
 
         this.control.update();
@@ -94,16 +101,29 @@ phina.define("stg.GameScene", {
 
     addCube: function() {
         let geometory = new THREE.CubeGeometry(10, 10, 10);
-        let material = new THREE.MeshLambertMaterial({color: 0x44aa22});
+        let material = new THREE.MeshLambertMaterial({color: Math.randint(0x333333, 0xffffff)});
 
-        var cb = phina.extension.ThreeElement(new THREE.Mesh(geometory, material));
+        var obj = phina.extension.ThreeElement(new THREE.Mesh(geometory, material));
         var ph = phina.extension.Physics(this.phyWorld,{
             type: "box",
             size: {x: 5, y: 5, z: 5},
             mass: 10,
-        }).attachTo(cb);
-        cb.setPosition(0, 100, 0);
-        cb.addChildTo(this.glLayer);
-        this.glScene.add(cb.threeObj);
+        }).attachTo(obj);
+        obj.setPosition(0, 100, 0);
+        obj.addChildTo(this.glLayer);
+    },
+
+    addSphere: function() {
+        let geometory = new THREE.SphereGeometry(5, 32, 32);
+        let material = new THREE.MeshLambertMaterial({color: Math.randint(0x333333, 0xffffff)});
+
+        var obj = phina.extension.ThreeElement(new THREE.Mesh(geometory, material));
+        var ph = phina.extension.Physics(this.phyWorld,{
+            type: "sphere",
+            radius: 5,
+            mass: 10,
+        }).attachTo(obj);
+        obj.setPosition(Math.randint(0, 2), 150, Math.randint(0, 2));
+        obj.addChildTo(this.glLayer);
     },
 });
