@@ -41,12 +41,17 @@ phina.define("stg.GameScene", {
         this.setup3DWorld();
         this.setup3DObject();
 
+        //プレイヤー
+        this.player = stg.Player(this.phyWorld)
+            .addChildTo(this)
+            .setPosition(0, 50, 0);
+
         this.time = 0;
     },
 
     update: function(app) {
         if (this.time % 10 == 0) {
-            Math.randint(0,1)? this.addCube(): this.addSphere();
+//            Math.randint(0,1)? this.addCube(): this.addSphere();
         }
 
         this.control.update();
@@ -118,7 +123,7 @@ phina.define("stg.GameScene", {
         let material = new THREE.MeshLambertMaterial({color: Math.randint(0x333333, 0xffffff)});
 
         var obj = phina.extension.ThreeElement(new THREE.Mesh(geometory, material));
-        var ph = phina.extension.Physics(this.phyWorld,{
+        var ph = phina.extension.Physics(this.phyWorld, {
             type: "sphere",
             radius: 5,
             mass: 10,
